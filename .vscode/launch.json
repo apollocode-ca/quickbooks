@@ -1,0 +1,51 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Quickbooks integration tests",
+            "request": "launch",
+            "type": "dart",
+            "console": "terminal",
+            "program": "test/integration.test.dart",
+            "toolArgs": [
+                "--define=QUICKBOOKS_CLIENT_ID=ABvhNbsVu8mQvYr1bsh8vH7HivJDrRYvXTcMSHCWSTHJ0SBAVz",
+                "--define=QUICKBOOKS_CLIENT_SECRET=ZsmipPMsXqVVGKxKueRxTKhiTuay0agirTsJaOwx",
+                "--define=QUICKBOOKS_REDIRECT_URI=https://google.ca",
+                "--define=QUICKBOOKS_STATE=confirmation",
+                "--define=QUICKBOOKS_IS_PRODUCTION=false",
+            ]
+        },
+
+        {
+            "name": "Quickbooks usage example",
+            "request": "launch",
+            "type": "dart",
+            "console": "terminal",
+            "program": "example/quickbooks_example.dart",
+            "toolArgs": [
+                "--define=QUICKBOOKS_CLIENT_ID=ABvhNbsVu8mQvYr1bsh8vH7HivJDrRYvXTcMSHCWSTHJ0SBAVz",
+                "--define=QUICKBOOKS_CLIENT_SECRET=ZsmipPMsXqVVGKxKueRxTKhiTuay0agirTsJaOwx",
+                "--define=QUICKBOOKS_REDIRECT_URI=https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl",
+                "--define=QUICKBOOKS_STATE=confirmation",
+                "--define=QUICKBOOKS_IS_PRODUCTION=false",
+            ]
+        },
+        {
+            "name": "Quickbooks unit tests",
+            "request": "launch",
+            "type": "dart",
+            "console": "terminal",
+            "program": "test/unit.test.dart",
+            "toolArgs": [
+                "--define=QUICKBOOKS_CLIENT_ID=ABvhNbsVu8mQvYr1bsh8vH7HivJDrRYvXTcMSHCWSTHJ0SBAVz",
+                "--define=QUICKBOOKS_CLIENT_SECRET=ZsmipPMsXqVVGKxKueRxTKhiTuay0agirTsJaOwx",
+                "--define=QUICKBOOKS_REDIRECT_URI=https://google.ca",
+                "--define=QUICKBOOKS_STATE=confirmation",
+                "--define=QUICKBOOKS_IS_PRODUCTION=false",
+            ]
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+export './description_line_details.entity.dart';
+export './description_only_line.entity.dart';
+export './discount_line.entity.dart';
+export './discount_line_details.entity.dart';
+export './group_line.entity.dart';
+export './group_line_defails.entity.dart';
+export './line.entity.dart';
+export './markup_info.entity.dart';
+export './sales_item_line.entity.dart';
+export './sales_item_line_detail.entity.dart';
+export './sub_total_line.entity.dart';
+export './sub_total_line_details.entity.dart';
+export './tax_line.entity.dart';
+export 'tax_line_details.entity.dart';

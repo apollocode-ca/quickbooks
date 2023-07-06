@@ -28,6 +28,7 @@ class QuickbooksGroupLineDetails {
     );
   }
 
+  /// Converts to a map value
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'Quantity': quantity,
@@ -36,6 +37,7 @@ class QuickbooksGroupLineDetails {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksGroupLineDetails.fromMap(Map<String, dynamic> map) {
     return QuickbooksGroupLineDetails(
       quantity: double.tryParse(map['Quantity'].toString()),
@@ -53,8 +55,10 @@ class QuickbooksGroupLineDetails {
     );
   }
 
+  /// Converts to a json value
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksGroupLineDetails.fromJson(String source) =>
       QuickbooksGroupLineDetails.fromMap(
           json.decode(source) as Map<String, dynamic>);

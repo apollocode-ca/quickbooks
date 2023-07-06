@@ -33,6 +33,7 @@ class QuickbooksSalesItemLine extends QuickbooksLine {
     );
   }
 
+  /// Converts to a map value
   @override
   Map<String, dynamic> toMap() {
     return {
@@ -45,6 +46,7 @@ class QuickbooksSalesItemLine extends QuickbooksLine {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksSalesItemLine.fromMap(Map<String, dynamic> map) {
     return QuickbooksSalesItemLine(
       id: map['Id'],
@@ -57,9 +59,11 @@ class QuickbooksSalesItemLine extends QuickbooksLine {
     );
   }
 
+  /// Converts to a json value
   @override
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksSalesItemLine.fromJson(String source) =>
       QuickbooksSalesItemLine.fromMap(
           json.decode(source) as Map<String, dynamic>);

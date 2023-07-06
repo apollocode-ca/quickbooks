@@ -14,6 +14,7 @@ class QuickbooksConfigurationService {
 
   QuickbooksConfigurationService._privateConstructor();
 
+  /// Configuration service singleton constructor
   static final QuickbooksConfigurationService _instance =
       QuickbooksConfigurationService._privateConstructor();
 

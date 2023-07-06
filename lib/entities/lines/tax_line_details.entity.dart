@@ -38,6 +38,7 @@ class QuickbooksTaxLineDetails {
     );
   }
 
+  /// Converts to a map value
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'TaxRateRef': taxRateRef.toMap(),
@@ -49,6 +50,7 @@ class QuickbooksTaxLineDetails {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksTaxLineDetails.fromMap(Map<String, dynamic> map) {
     return QuickbooksTaxLineDetails(
         taxRateRef: QuickbooksReferenceType.fromMap(
@@ -62,8 +64,10 @@ class QuickbooksTaxLineDetails {
         taxPercent: double.tryParse(map['TaxPercent'].toString()));
   }
 
+  /// Converts to a json value
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksTaxLineDetails.fromJson(String source) =>
       QuickbooksTaxLineDetails.fromMap(
           json.decode(source) as Map<String, dynamic>);

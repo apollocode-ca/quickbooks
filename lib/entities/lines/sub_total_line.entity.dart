@@ -29,6 +29,7 @@ class QuickbooksSubtotalLine extends QuickbooksLine {
     );
   }
 
+  /// Converts to a map value
   @override
   Map<String, dynamic> toMap() {
     return {
@@ -41,6 +42,7 @@ class QuickbooksSubtotalLine extends QuickbooksLine {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksSubtotalLine.fromMap(Map<String, dynamic> map) {
     return QuickbooksSubtotalLine(
       id: map['Id'],
@@ -54,9 +56,11 @@ class QuickbooksSubtotalLine extends QuickbooksLine {
     );
   }
 
+  /// Converts to a json value
   @override
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksSubtotalLine.fromJson(String source) =>
       QuickbooksSubtotalLine.fromMap(
           json.decode(source) as Map<String, dynamic>);

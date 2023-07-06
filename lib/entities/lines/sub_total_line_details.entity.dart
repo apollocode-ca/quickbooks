@@ -18,12 +18,14 @@ class QuickbooksSubtotalLineDetails {
     );
   }
 
+  /// Converts to a map value
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'ItemRef': itemRef?.toMap(),
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksSubtotalLineDetails.fromMap(Map<String, dynamic> map) {
     return QuickbooksSubtotalLineDetails(
       itemRef: map['ItemRef'] != null
@@ -33,8 +35,10 @@ class QuickbooksSubtotalLineDetails {
     );
   }
 
+  /// Converts to a json value
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksSubtotalLineDetails.fromJson(String source) =>
       QuickbooksSubtotalLineDetails.fromMap(
           json.decode(source) as Map<String, dynamic>);

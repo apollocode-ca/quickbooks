@@ -33,6 +33,8 @@ Future<QuickbooksOauth2Tokens> oauthConnectExample(
 
   String authUrl = await service.getAuthUrl();
 
+  // Prints the connection instructions in the console and
+  // gets the informations from the console entry
   print('Please connect on the link below:\n');
   print(authUrl);
   print(
@@ -46,6 +48,7 @@ Future<QuickbooksOauth2Tokens> oauthConnectExample(
   print('You entered: $realmId');
   print("Retrieving data");
 
+  // Gets the tokens from Quickbooks
   QuickbooksOauth2Tokens value =
       await service.getTokens(authorizationCode: code ?? "", realmId: realmId);
   print('Oauth2 tokens');

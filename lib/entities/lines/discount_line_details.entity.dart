@@ -34,6 +34,7 @@ class QuickbooksDiscountLineDetails {
     );
   }
 
+  /// Converts to a map value
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'ClassRef': classRef?.toMap(),
@@ -44,6 +45,7 @@ class QuickbooksDiscountLineDetails {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksDiscountLineDetails.fromMap(Map<String, dynamic> map) {
     return QuickbooksDiscountLineDetails(
         classRef: map['ClassRef'] != null
@@ -62,8 +64,10 @@ class QuickbooksDiscountLineDetails {
         discountPercent: double.tryParse(map['DiscountPercent'].toString()));
   }
 
+  /// Converts to a json value
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksDiscountLineDetails.fromJson(String source) =>
       QuickbooksDiscountLineDetails.fromMap(
           json.decode(source) as Map<String, dynamic>);

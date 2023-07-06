@@ -11,6 +11,12 @@ dependencies:
   quickbooks: <latest_version>
 ```
 
+To import it in your `dart` file, add the following line:
+
+```dart
+import 'package:quickbooks/quickbooks.dart';
+```
+
 ## Getting started
 
 To use the different features of this project, you will need:

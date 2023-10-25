@@ -1,6 +1,6 @@
 name: quickbooks
 description: A package to talk to the quickbook api. Can manage Oauth2 connection and many data queries of the Quickbooks platform.
-version: 1.4.0
+version: 1.4.2
 homepage: https://apollocode.ca/
 repository: https://github.com/apollocode-ca/quickbooks
 

@@ -27,8 +27,8 @@ class QuickbooksEffectiveTaxRate {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'RateValue': rateValue,
-      'EndDate': endDate,
-      'EffectiveDate': effectiveDate,
+      'EndDate': endDate?.toString(),
+      'EffectiveDate': effectiveDate?.toString(),
     };
   }
 

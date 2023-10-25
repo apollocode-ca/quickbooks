@@ -7,14 +7,14 @@ import 'package:quickbooks/enums/invoice/detail_type.enum.dart';
 /// Main line for a [QuickbooksInvoice]
 abstract class QuickbooksLine {
   String? id;
-  int lineNum;
+  int? lineNum;
   String? description;
   double amount;
 
   final QuickbooksLineDetailType type;
   QuickbooksLine({
     this.id,
-    required this.lineNum,
+    this.lineNum,
     this.description,
     required this.amount,
     required this.type,
@@ -25,8 +25,19 @@ abstract class QuickbooksLine {
     return 'QuickbooksLine(id: $id, lineNum: $lineNum, description: $description, amount: $amount, type: $type)';
   }
 
+  /// Converts a line into a Map<String, dynamic>
   Map<String, dynamic> toMap();
 
+  /// Converts a map into a line by the line type.
+  /// Throws an error if the line type is not supported.
+  ///
+  /// Currently supported lines are:
+  /// - SalesItemLineDetail
+  /// - GroupLineDetail
+  /// - DescriptionOnlyLineDetail
+  /// - DiscountLineDetail
+  /// - SubTotalLineDetail
+  /// - TaxLineDetail
   factory QuickbooksLine.fromMap(Map<String, dynamic> map) {
     var type =
         QuickbooksLineDetailTypeExtension.fromJsonString(map['DetailType']);
@@ -44,14 +55,29 @@ abstract class QuickbooksLine {
         return QuickbooksSubtotalLine.fromMap(map);
       case QuickbooksLineDetailType.taxLineDetail:
         return QuickbooksTaxLine.fromMap(map);
+      case QuickbooksLineDetailType.itemBasedExpenseLineDetail:
+        return QuickbooksItemBasedExpenseLine.fromMap(map);
+      case QuickbooksLineDetailType.accountBasedExpenseLineDetail:
+        return QuickbooksAccountBasedExpenseLine.fromMap(map);
       default:
         throw UnimplementedError(
             "No entity implemented for the line type $type");
     }
   }
 
+  /// Converts a line to a json value
   String toJson();
 
+  /// Converts a json value into a line by the line type.
+  /// Throws an error if the line type is not supported.
+  ///
+  /// Currently supported lines are:
+  /// - SalesItemLineDetail
+  /// - GroupLineDetail
+  /// - DescriptionOnlyLineDetail
+  /// - DiscountLineDetail
+  /// - SubTotalLineDetail
+  /// - TaxLineDetail
   factory QuickbooksLine.fromJson(String source) =>
       QuickbooksLine.fromMap(json.decode(source) as Map<String, dynamic>);
 

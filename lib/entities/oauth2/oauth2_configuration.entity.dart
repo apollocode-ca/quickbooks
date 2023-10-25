@@ -67,6 +67,7 @@ class QuickbooksConnectConfiguration {
     );
   }
 
+  /// Converts to a map value
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'issuer': issuer,
@@ -90,6 +91,7 @@ class QuickbooksConnectConfiguration {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksConnectConfiguration.fromMap(Map<String, dynamic> map) {
     return QuickbooksConnectConfiguration(
       issuer: map['issuer'] as String,
@@ -148,9 +150,10 @@ class QuickbooksConnectConfiguration {
     );
   }
 
+  /// Converts to a json value
   Map<String, dynamic> toJson() => toMap();
 
-  /// Creates a [LevelState] from a json data [source]
+  /// Converts from a json value
   factory QuickbooksConnectConfiguration.fromJson(String source) =>
       QuickbooksConnectConfiguration.fromMap(json.decode(source));
 

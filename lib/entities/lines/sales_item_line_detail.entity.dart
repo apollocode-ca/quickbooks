@@ -62,9 +62,10 @@ class QuickbooksSalesItemLineDetails {
     );
   }
 
+  /// Converts to a map value
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'TaxInclusiveAmount': taxInclusiveAmount,
+      'TaxInclusiveAmt': taxInclusiveAmount,
       'DiscountAmt': discountAmount,
       'ItemRef': itemRef?.toMap(),
       'ClassRef': classRef?.toMap(),
@@ -79,9 +80,10 @@ class QuickbooksSalesItemLineDetails {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksSalesItemLineDetails.fromMap(Map<String, dynamic> map) {
     return QuickbooksSalesItemLineDetails(
-      taxInclusiveAmount: double.tryParse(map['TaxInclusiveAmount'].toString()),
+      taxInclusiveAmount: double.tryParse(map['TaxInclusiveAmt'].toString()),
       discountAmount: double.tryParse(map['DiscountAmt'].toString()),
       itemRef: map['ItemRef'] != null
           ? QuickbooksReferenceType.fromMap(
@@ -114,8 +116,10 @@ class QuickbooksSalesItemLineDetails {
     );
   }
 
+  /// Converts to a json value
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksSalesItemLineDetails.fromJson(String source) =>
       QuickbooksSalesItemLineDetails.fromMap(
           json.decode(source) as Map<String, dynamic>);

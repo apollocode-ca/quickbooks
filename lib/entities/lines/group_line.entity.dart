@@ -10,7 +10,7 @@ class QuickbooksGroupLine extends QuickbooksLine {
 
   QuickbooksGroupLine({
     super.id,
-    required super.lineNum,
+    super.lineNum,
     super.description,
     required super.amount,
     required super.type,
@@ -29,6 +29,7 @@ class QuickbooksGroupLine extends QuickbooksLine {
     );
   }
 
+  /// Converts to a map value
   @override
   Map<String, dynamic> toMap() {
     return {
@@ -41,6 +42,7 @@ class QuickbooksGroupLine extends QuickbooksLine {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksGroupLine.fromMap(Map<String, dynamic> map) {
     return QuickbooksGroupLine(
       id: map['Id'],
@@ -53,9 +55,11 @@ class QuickbooksGroupLine extends QuickbooksLine {
     );
   }
 
+  /// Converts to a json value
   @override
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksGroupLine.fromJson(String source) =>
       QuickbooksGroupLine.fromMap(json.decode(source) as Map<String, dynamic>);
 

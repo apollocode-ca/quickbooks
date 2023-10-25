@@ -1,11 +1,11 @@
 import 'package:alfred/alfred.dart';
 import 'package:quickbooks/entities/quickbooks_attachable.entity.dart';
-import 'package:quickbooks/entities/quickbooks_customer.dart';
+import 'package:quickbooks/entities/quickbooks_tax_rate_entity.dart';
 import 'package:quickbooks/services/base/quickbooks_query.service.dart';
 
-/// Service for the [QuickbooksCustomer]
-class QuickbooksCustomerService extends QuickbooksQueryService {
-  /// [QuickbooksCustomerService] constructor.
+/// Service for the [QuickbooksTaxRate]
+class QuickbooksTaxRatesService extends QuickbooksQueryService {
+  /// [QuickbooksTaxRatesService] constructor.
   ///
   /// [postEndpoint] Endpoint used to make requests that are not sql queries
   ///
@@ -16,14 +16,14 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
   /// [isProduction] Specifies if the service is in production or in sandbox. This will
   /// define the base endpoint url used by the service. If not given, takes the environement
   /// value QUICKBOOKS_IS_PRODUCTION or is true by default.
-  QuickbooksCustomerService(
+  QuickbooksTaxRatesService(
       {super.isProduction,
-      super.postEndpoint = 'customer',
-      super.baseQuery = "SELECT * FROM Customer",
+      super.postEndpoint = 'taxrate',
+      super.baseQuery = "SELECT * FROM TaxRate",
       super.baseConditions});
 
-  /// Gets all [QuickbooksCustomer] in the Quickbooks API for the given [accessToken] and [companyId]
-  Future<List<QuickbooksCustomer>> getAll({
+  /// Gets all [QuickbooksTaxRate] in the Quickbooks API for the given [accessToken] and [companyId]
+  Future<List<QuickbooksTaxRate>> getAll({
     required String accessToken,
     required String companyId,
     String? conditions,
@@ -32,14 +32,14 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
       accessToken: accessToken,
       companyId: companyId,
       conditions: conditions,
-      location: 'Customer',
+      location: 'TaxRate',
     );
 
-    List<QuickbooksCustomer> results = [];
+    List<QuickbooksTaxRate> results = [];
 
     for (var item in items) {
       try {
-        results.add(QuickbooksCustomer.fromMap(item));
+        results.add(QuickbooksTaxRate.fromMap(item));
       } catch (e) {
         print(e);
       }
@@ -47,10 +47,10 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
     return results;
   }
 
-  /// Gets a [QuickbooksCustomer] from the Quickbooks API with the given
+  /// Gets a [QuickbooksTaxRate] from the Quickbooks API with the given
   /// [accessToken], [companyId] and [id].
   /// Returns null if no data found.
-  Future<QuickbooksCustomer?> get({
+  Future<QuickbooksTaxRate?> get({
     required String accessToken,
     required String companyId,
     required String id,
@@ -59,13 +59,13 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
       accessToken: accessToken,
       companyId: companyId,
       id: id,
-      location: 'Customer',
+      location: 'TaxRate',
     );
     if (item == null) {
       return null;
     }
     try {
-      var result = QuickbooksCustomer.fromMap(item);
+      var result = QuickbooksTaxRate.fromMap(item);
       return result;
     } catch (_) {
       return null;
@@ -99,29 +99,30 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
     return results;
   }
 
-  /// Creates a [QuickbooksCustomer] with
+  /// Creates a [QuickbooksTaxRate] with
   /// the given [accessToken] and [companyId]
-  Future<QuickbooksCustomer> createOne({
+  Future<QuickbooksTaxRate> createOne({
     required String accessToken,
     required String companyId,
-    required QuickbooksCustomer data,
+    required QuickbooksTaxRate data,
   }) async {
     var result = await post(
       accessToken: accessToken,
       companyId: companyId,
       data: data.toMap(withId: false),
-      location: 'Customer',
+      location: 'TaxRate',
     );
-    var newData = QuickbooksCustomer.fromMap(result);
+
+    var newData = QuickbooksTaxRate.fromMap(result);
     return newData;
   }
 
-  /// Updates a [QuickbooksCustomer] with
+  /// Updates a [QuickbooksTaxRate] with
   /// the given [accessToken] and [companyId]
-  Future<QuickbooksCustomer> updateOne({
+  Future<QuickbooksTaxRate> updateOne({
     required String accessToken,
     required String companyId,
-    required QuickbooksCustomer data,
+    required QuickbooksTaxRate data,
   }) async {
     var oldData = await get(
       accessToken: accessToken,
@@ -139,17 +140,17 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
       accessToken: accessToken,
       companyId: companyId,
       data: data.toMap(),
-      location: 'Customer',
+      location: 'TaxRate',
     );
-    var newData = QuickbooksCustomer.fromMap(result);
+    var newData = QuickbooksTaxRate.fromMap(result);
     return newData;
   }
 
-  /// Deletes a [QuickbooksCustomer] with
+  /// Deletes a [QuickbooksTaxRate] with
   /// the given [accessToken] and [companyId]
   ///
   /// Sets the [active] field to false
-  Future<QuickbooksCustomer> deleteOne({
+  Future<QuickbooksTaxRate> deleteOne({
     required String accessToken,
     required String companyId,
     required String id,
@@ -170,10 +171,10 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
       accessToken: accessToken,
       companyId: companyId,
       data: data.toMap(),
-      location: 'Customer',
+      location: 'TaxRate',
     );
 
-    var newData = QuickbooksCustomer.fromMap(result);
+    var newData = QuickbooksTaxRate.fromMap(result);
 
     return newData;
   }

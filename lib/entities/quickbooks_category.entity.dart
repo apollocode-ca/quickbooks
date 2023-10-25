@@ -45,11 +45,12 @@ class QuickbooksCategory {
     return {
       if (withId) 'Id': id,
       'FullyQualifiedName': fullyQualifiedName,
-      'Domain': domain,
+      'domain': domain,
       'Name': name,
       'SyncToken': syncToken,
       'sparse': sparse,
       'Active': active,
+      'Type': 'Category',
     };
   }
 
@@ -57,7 +58,7 @@ class QuickbooksCategory {
     return QuickbooksCategory(
       id: map['Id'],
       fullyQualifiedName: map['FullyQualifiedName'],
-      domain: map['Domain'],
+      domain: map['domain'],
       name: map['Name'],
       syncToken: map['SyncToken'],
       sparse: map['sparse'],

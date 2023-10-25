@@ -47,7 +47,7 @@ class QuickbooksCustomer {
   String? source;
   String? primaryTaxIdentifier;
   String? GSTRegistrationType;
-  String? printOnChackName;
+  String? printOnCheckName;
   QuickbooksPhysicalAddress? billAddr;
   String? fullyQualifiedName;
   int? level;
@@ -94,7 +94,7 @@ class QuickbooksCustomer {
     this.source,
     this.primaryTaxIdentifier,
     this.GSTRegistrationType,
-    this.printOnChackName,
+    this.printOnCheckName,
     this.billAddr,
     this.fullyQualifiedName,
     this.level,
@@ -143,7 +143,7 @@ class QuickbooksCustomer {
     String? source,
     String? primaryTaxIdentifier,
     String? GSTRegistrationType,
-    String? printOnChackName,
+    String? printOnCheckName,
     QuickbooksPhysicalAddress? billAddr,
     String? fullyQualifiedName,
     int? level,
@@ -193,7 +193,7 @@ class QuickbooksCustomer {
       source: source ?? this.source,
       primaryTaxIdentifier: primaryTaxIdentifier ?? this.primaryTaxIdentifier,
       GSTRegistrationType: GSTRegistrationType ?? this.GSTRegistrationType,
-      printOnChackName: printOnChackName ?? this.printOnChackName,
+      printOnCheckName: printOnCheckName ?? this.printOnCheckName,
       billAddr: billAddr ?? this.billAddr,
       fullyQualifiedName: fullyQualifiedName ?? this.fullyQualifiedName,
       level: level ?? this.level,
@@ -244,7 +244,7 @@ class QuickbooksCustomer {
       'Source': source,
       'PrimaryTaxIdentifier': primaryTaxIdentifier,
       'GSTRegistrationType': GSTRegistrationType,
-      'PrintOnChackName': printOnChackName,
+      'PrintOnCheckName': printOnCheckName,
       'BillAddr': billAddr?.toMap(),
       'FullyQualifiedName': fullyQualifiedName,
       'Level': level,
@@ -331,7 +331,7 @@ class QuickbooksCustomer {
       source: map['Source'],
       primaryTaxIdentifier: map['PrimaryTaxIdentifier'],
       GSTRegistrationType: map['GSTRegistrationType'],
-      printOnChackName: map['PrintOnChackName'],
+      printOnCheckName: map['PrintOnCheckName'],
       billAddr: map['BillAddr'] != null
           ? QuickbooksPhysicalAddress.fromMap(
               map['BillAddr'] as Map<String, dynamic>)
@@ -349,7 +349,15 @@ class QuickbooksCustomer {
 
   @override
   String toString() {
-    return 'QuickbooksCustomer(id: $id, syncToken: $syncToken, displayName: $displayName, title: $title, givenName: $givenName, middleName: $middleName, suffix: $suffix, familyName: $familyName, primaryEmailAddr: $primaryEmailAddr, resaleNum: $resaleNum, secondaryTaxIdentifier: $secondaryTaxIdentifier, ARAccountRef: $ARAccountRef, defaultTaxCodeRef: $defaultTaxCodeRef, preferredDeliveryMethod: $preferredDeliveryMethod, GSTIN: $GSTIN, salesTermRef: $salesTermRef, customerTypeRef: $customerTypeRef, fax: $fax, businessNumber: $businessNumber, billWithParent: $billWithParent, currencyRef: $currencyRef, mobile: $mobile, job: $job, balanceWithJobs: $balanceWithJobs, primaryPhone: $primaryPhone, openBalanceDate: $openBalanceDate, taxable: $taxable, alternatePhone: $alternatePhone, metaDate: $metaData, parentRef: $parentRef, notes: $notes, webAddr: $webAddr, active: $active, companyName: $companyName, balance: $balance, shipAddr: $shipAddr, paymentMethodRef: $paymentMethodRef, isProject: $isProject, source: $source, primaryTaxIdentifier: $primaryTaxIdentifier, GSTRegistrationType: $GSTRegistrationType, printOnChackName: $printOnChackName, billAddr: $billAddr, fullyQualifiedName: $fullyQualifiedName, level: $level, taxExemptionReasonId: $taxExemptionReasonId)';
+    return 'QuickbooksCustomer(id: $id, syncToken: $syncToken, displayName: $displayName, title: $title, givenName: $givenName, middleName: $middleName, '
+        'suffix: $suffix, familyName: $familyName, primaryEmailAddr: $primaryEmailAddr, resaleNum: $resaleNum, secondaryTaxIdentifier: $secondaryTaxIdentifier, '
+        'ARAccountRef: $ARAccountRef, defaultTaxCodeRef: $defaultTaxCodeRef, preferredDeliveryMethod: $preferredDeliveryMethod, GSTIN: $GSTIN, '
+        'salesTermRef: $salesTermRef, customerTypeRef: $customerTypeRef, fax: $fax, businessNumber: $businessNumber, billWithParent: $billWithParent, '
+        'currencyRef: $currencyRef, mobile: $mobile, job: $job, balanceWithJobs: $balanceWithJobs, primaryPhone: $primaryPhone, openBalanceDate: $openBalanceDate, '
+        'taxable: $taxable, alternatePhone: $alternatePhone, metaDate: $metaData, parentRef: $parentRef, notes: $notes, webAddr: $webAddr, active: $active, '
+        'companyName: $companyName, balance: $balance, shipAddr: $shipAddr, paymentMethodRef: $paymentMethodRef, isProject: $isProject, source: $source, '
+        'primaryTaxIdentifier: $primaryTaxIdentifier, GSTRegistrationType: $GSTRegistrationType, printOnCheckName: $printOnCheckName, billAddr: $billAddr, '
+        'fullyQualifiedName: $fullyQualifiedName, level: $level, taxExemptionReasonId: $taxExemptionReasonId)';
   }
 
   @override
@@ -398,7 +406,7 @@ class QuickbooksCustomer {
         other.source == source &&
         other.primaryTaxIdentifier == primaryTaxIdentifier &&
         other.GSTRegistrationType == GSTRegistrationType &&
-        other.printOnChackName == printOnChackName &&
+        other.printOnCheckName == printOnCheckName &&
         other.billAddr == billAddr &&
         other.fullyQualifiedName == fullyQualifiedName &&
         other.level == level &&
@@ -448,7 +456,7 @@ class QuickbooksCustomer {
         source.hashCode ^
         primaryTaxIdentifier.hashCode ^
         GSTRegistrationType.hashCode ^
-        printOnChackName.hashCode ^
+        printOnCheckName.hashCode ^
         billAddr.hashCode ^
         fullyQualifiedName.hashCode ^
         level.hashCode ^

@@ -61,9 +61,13 @@ class QuickbooksOauth2Service {
   /// Gets the auth url for a user to connect to your app with Quickbooks.
   /// The connection with this url will provide an authorization code
   /// to get the Oauth2 tokens.
+  ///
   /// The [scopes] you give represents the data you ask authorization to see.
   /// If you don't specify it, the link will ask all scopes
-  Future<String> getAuthUrl({List<Oauth2Scopes>? scopes}) async {
+  ///
+  /// The [state] you give is a verification [String] for quickbooks to verify if the connection has
+  /// been successfull. Can be anything. It overrides the state given in the constructor.
+  Future<String> getAuthUrl({List<Oauth2Scopes>? scopes, String? state}) async {
     // Gets the configuration for the current use.
     var config =
         await _configService.getConfiguration(isProduction: _isProduction);
@@ -76,13 +80,20 @@ class QuickbooksOauth2Service {
         secret: _clientSecret);
 
     // Defines the scopes to ask
-    scopes ??= Oauth2Scopes.values;
+    scopes ??= [
+      Oauth2Scopes.accounting,
+      Oauth2Scopes.openid,
+      Oauth2Scopes.profile,
+      Oauth2Scopes.email,
+      Oauth2Scopes.phone,
+      Oauth2Scopes.address,
+    ];
     var scopesStrings =
         Oauth2ScopesConvertExtension.generateScopeStrings(scopes: scopes);
 
     //Gets the autorization url
     var authorizationUrl = grant.getAuthorizationUrl(Uri.parse(_redirectUrl),
-        scopes: scopesStrings, state: _state);
+        scopes: scopesStrings, state: state ?? _state);
 
     //Returns the authorization url string
     var urlString = authorizationUrl.toString();

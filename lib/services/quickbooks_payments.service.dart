@@ -1,3 +1,4 @@
+import 'package:alfred/alfred.dart';
 import 'package:quickbooks/entities/payment/quickbooks_payment.entity.dart';
 import 'package:quickbooks/entities/quickbooks_attachable.entity.dart';
 import 'package:quickbooks/services/base/quickbooks_query.service.dart';
@@ -106,9 +107,11 @@ class QuickbooksPaymentService extends QuickbooksQueryService {
     required QuickbooksPayment data,
   }) async {
     var result = await post(
-        accessToken: accessToken,
-        companyId: companyId,
-        data: data.toMap(withId: false));
+      accessToken: accessToken,
+      companyId: companyId,
+      data: data.toMap(withId: false),
+      location: 'Payment',
+    );
     var newData = QuickbooksPayment.fromMap(result);
     return newData;
   }
@@ -120,9 +123,58 @@ class QuickbooksPaymentService extends QuickbooksQueryService {
     required String companyId,
     required QuickbooksPayment data,
   }) async {
+    var oldData = await get(
+      accessToken: accessToken,
+      companyId: companyId,
+      id: data.id!,
+    );
+
+    if (oldData == null) {
+      throw AlfredException(404, 'Data not found');
+    }
+
+    data.syncToken = oldData.syncToken;
+
     var result = await post(
-        accessToken: accessToken, companyId: companyId, data: data.toMap());
+      accessToken: accessToken,
+      companyId: companyId,
+      data: data.toMap(),
+      location: 'Payment',
+    );
     var newData = QuickbooksPayment.fromMap(result);
+    return newData;
+  }
+
+  /// Deletes a [QuickbooksPayment] with
+  /// the given [accessToken] and [companyId]
+  ///
+  /// Sets the [active] field to false
+  Future<QuickbooksPayment> deleteOne({
+    required String accessToken,
+    required String companyId,
+    required String id,
+  }) async {
+    var data = await get(
+      accessToken: accessToken,
+      companyId: companyId,
+      id: id,
+    );
+
+    if (data == null) {
+      throw AlfredException(404, 'Data not found');
+    }
+
+    data.active = false;
+
+    var result = await post(
+      accessToken: accessToken,
+      companyId: companyId,
+      data: data.toMap(),
+      location: 'Payment',
+    );
+
+    var newData = QuickbooksPayment.fromMap(result);
+
     return newData;
   }
 }

@@ -26,6 +26,7 @@ class QuickbooksPayment {
   Map<String, dynamic>? metaData;
   String? paymentRefNum;
   QuickbooksReferenceType? taxExemptionRef;
+  bool? active;
   QuickbooksPayment({
     this.id,
     required this.totalAmt,
@@ -46,6 +47,7 @@ class QuickbooksPayment {
     this.metaData,
     this.paymentRefNum,
     this.taxExemptionRef,
+    this.active,
   });
 
   QuickbooksPayment copyWith({
@@ -68,6 +70,7 @@ class QuickbooksPayment {
     Map<String, dynamic>? metaData,
     String? paymentRefNum,
     QuickbooksReferenceType? taxExempionRef,
+    bool? active,
   }) {
     return QuickbooksPayment(
       id: id ?? this.id,
@@ -90,6 +93,7 @@ class QuickbooksPayment {
       metaData: metaData ?? this.metaData,
       paymentRefNum: paymentRefNum ?? this.paymentRefNum,
       taxExemptionRef: taxExempionRef ?? taxExemptionRef,
+      active: active ?? this.active,
     );
   }
 
@@ -114,6 +118,7 @@ class QuickbooksPayment {
       'MetaData': metaData,
       'PaymentRefNum': paymentRefNum,
       'TaxExemptionRef': taxExemptionRef?.toMap(),
+      'Active': active,
     };
   }
 
@@ -163,6 +168,7 @@ class QuickbooksPayment {
           ? QuickbooksReferenceType.fromMap(
               map['TaxExemptionRef'] as Map<String, dynamic>)
           : null,
+      active: map['Active'],
     );
   }
 
@@ -173,7 +179,11 @@ class QuickbooksPayment {
 
   @override
   String toString() {
-    return 'QuickbooksPayment(id: $id, totalAmt: $totalAmt, customerRef: $customerRef, syncToken: $syncToken, currencyRef: $currencyRef, privateNote: $privateNote, paymentMethodRef: $paymentMethodRef, unappliedAmt: $unappliedAmt, depositToAccountRef: $depositToAccountRef, exchangeRate: $exchangeRate, line: $line, txnSource: $txnSource, ARAccountRef: $ARAccountRef, txnDate: $txnDate, creditCardPayment: $creditCardPayment, transactionLocationType: $transactionLocationType, metaData: $metaData, paymentRefNum: $paymentRefNum, taxExempionRef: $taxExemptionRef)';
+    return 'QuickbooksPayment(id: $id, totalAmt: $totalAmt, customerRef: $customerRef, syncToken: $syncToken, currencyRef: $currencyRef, '
+        'privateNote: $privateNote, paymentMethodRef: $paymentMethodRef, unappliedAmt: $unappliedAmt, depositToAccountRef: $depositToAccountRef, '
+        'exchangeRate: $exchangeRate, line: $line, txnSource: $txnSource, ARAccountRef: $ARAccountRef, txnDate: $txnDate, '
+        'creditCardPayment: $creditCardPayment, transactionLocationType: $transactionLocationType, metaData: $metaData, paymentRefNum: $paymentRefNum, '
+        'taxExempionRef: $taxExemptionRef, active: $active)';
   }
 
   @override
@@ -199,7 +209,8 @@ class QuickbooksPayment {
         other.transactionLocationType == transactionLocationType &&
         collectionEquals(other.metaData, metaData) &&
         other.paymentRefNum == paymentRefNum &&
-        other.taxExemptionRef == taxExemptionRef;
+        other.taxExemptionRef == taxExemptionRef &&
+        other.active == active;
   }
 
   @override
@@ -222,6 +233,7 @@ class QuickbooksPayment {
         transactionLocationType.hashCode ^
         metaData.hashCode ^
         paymentRefNum.hashCode ^
-        taxExemptionRef.hashCode;
+        taxExemptionRef.hashCode ^
+        active.hashCode;
   }
 }

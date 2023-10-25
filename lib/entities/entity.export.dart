@@ -16,3 +16,8 @@ export './quickbooks_txn_tax_detail.dart';
 export './quickbooks_delivery_info.entity.dart';
 export './payment/payment.entity.export.dart';
 export './quickbooks_customer.dart';
+export './quickbooks_account.entity.dart';
+export './quickbooks_purchase.entity.dart';
+export './quickbooks_vendor_entity.dart';
+export './quickbooks_vendor_payment_bank_detail_entity.dart';
+export './quickbooks_contact_infos_entity.dart';

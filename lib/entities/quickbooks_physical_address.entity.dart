@@ -91,8 +91,8 @@ class QuickbooksPhysicalAddress {
       country: map['Country'],
       countrySubDivisionCode: map['CountrySubDivisionCode'],
       postalCode: map['PostalCode'],
-      lat: double.tryParse(map['Lat']),
-      long: double.tryParse(map['Long']),
+      lat: double.tryParse(map['Lat'].toString()),
+      long: double.tryParse(map['Long'].toString()),
     );
   }
 

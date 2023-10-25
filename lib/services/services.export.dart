@@ -7,3 +7,6 @@ export './quickbooks_products.service.dart';
 export './quickbooks_invoices.service.dart';
 export './quickbooks_payments.service.dart';
 export './quickbooks_customers.service.dart';
+export './quickbooks_accounts.service.dart';
+export './quickbooks_purchases.service.dart';
+export './quickbooks_vendors.service.dart';

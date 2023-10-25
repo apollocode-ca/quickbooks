@@ -22,6 +22,7 @@ class QuickbooksDescriptionLineDetails {
     );
   }
 
+  /// Converts to a map value
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'TaxCodeRef': taxCodeRef?.toMap(),
@@ -29,6 +30,7 @@ class QuickbooksDescriptionLineDetails {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksDescriptionLineDetails.fromMap(Map<String, dynamic> map) {
     return QuickbooksDescriptionLineDetails(
       taxCodeRef: map['TaxCodeRef'] != null
@@ -39,8 +41,10 @@ class QuickbooksDescriptionLineDetails {
     );
   }
 
+  /// Converts to a json value
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksDescriptionLineDetails.fromJson(String source) =>
       QuickbooksDescriptionLineDetails.fromMap(
           json.decode(source) as Map<String, dynamic>);

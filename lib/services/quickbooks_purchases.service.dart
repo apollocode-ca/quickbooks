@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:alfred/alfred.dart';
 import 'package:quickbooks/entities/quickbooks_attachable.entity.dart';
-import 'package:quickbooks/entities/quickbooks_customer.dart';
+import 'package:quickbooks/entities/quickbooks_purchase.entity.dart';
 import 'package:quickbooks/services/base/quickbooks_query.service.dart';
+import 'package:http/http.dart' as http;
 
-/// Service for the [QuickbooksCustomer]
-class QuickbooksCustomerService extends QuickbooksQueryService {
-  /// [QuickbooksCustomerService] constructor.
+/// Service for the [QuickbooksPurchase]
+class QuickbooksPurchasesService extends QuickbooksQueryService {
+  /// [QuickbooksPurchasesService] constructor.
   ///
   /// [postEndpoint] Endpoint used to make requests that are not sql queries
   ///
@@ -16,14 +19,14 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
   /// [isProduction] Specifies if the service is in production or in sandbox. This will
   /// define the base endpoint url used by the service. If not given, takes the environement
   /// value QUICKBOOKS_IS_PRODUCTION or is true by default.
-  QuickbooksCustomerService(
+  QuickbooksPurchasesService(
       {super.isProduction,
-      super.postEndpoint = 'customer',
-      super.baseQuery = "SELECT * FROM Customer",
+      super.postEndpoint = 'purchase',
+      super.baseQuery = "SELECT * FROM Purchase",
       super.baseConditions});
 
-  /// Gets all [QuickbooksCustomer] in the Quickbooks API for the given [accessToken] and [companyId]
-  Future<List<QuickbooksCustomer>> getAll({
+  /// Gets all [QuickbooksPurchase] in the Quickbooks API for the given [accessToken] and [companyId]
+  Future<List<QuickbooksPurchase>> getAll({
     required String accessToken,
     required String companyId,
     String? conditions,
@@ -32,14 +35,14 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
       accessToken: accessToken,
       companyId: companyId,
       conditions: conditions,
-      location: 'Customer',
+      location: 'Purchase',
     );
 
-    List<QuickbooksCustomer> results = [];
+    List<QuickbooksPurchase> results = [];
 
     for (var item in items) {
       try {
-        results.add(QuickbooksCustomer.fromMap(item));
+        results.add(QuickbooksPurchase.fromMap(item));
       } catch (e) {
         print(e);
       }
@@ -47,10 +50,10 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
     return results;
   }
 
-  /// Gets a [QuickbooksCustomer] from the Quickbooks API with the given
+  /// Gets a [QuickbooksPurchase] from the Quickbooks API with the given
   /// [accessToken], [companyId] and [id].
   /// Returns null if no data found.
-  Future<QuickbooksCustomer?> get({
+  Future<QuickbooksPurchase?> get({
     required String accessToken,
     required String companyId,
     required String id,
@@ -59,13 +62,13 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
       accessToken: accessToken,
       companyId: companyId,
       id: id,
-      location: 'Customer',
+      location: 'Purchase',
     );
     if (item == null) {
       return null;
     }
     try {
-      var result = QuickbooksCustomer.fromMap(item);
+      var result = QuickbooksPurchase.fromMap(item);
       return result;
     } catch (_) {
       return null;
@@ -99,29 +102,29 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
     return results;
   }
 
-  /// Creates a [QuickbooksCustomer] with
+  /// Creates a [QuickbooksPurchase] with
   /// the given [accessToken] and [companyId]
-  Future<QuickbooksCustomer> createOne({
+  Future<QuickbooksPurchase> createOne({
     required String accessToken,
     required String companyId,
-    required QuickbooksCustomer data,
+    required QuickbooksPurchase data,
   }) async {
     var result = await post(
       accessToken: accessToken,
       companyId: companyId,
       data: data.toMap(withId: false),
-      location: 'Customer',
+      location: 'Purchase',
     );
-    var newData = QuickbooksCustomer.fromMap(result);
+    var newData = QuickbooksPurchase.fromMap(result);
     return newData;
   }
 
-  /// Updates a [QuickbooksCustomer] with
+  /// Updates a [QuickbooksPurchase] with
   /// the given [accessToken] and [companyId]
-  Future<QuickbooksCustomer> updateOne({
+  Future<QuickbooksPurchase> updateOne({
     required String accessToken,
     required String companyId,
-    required QuickbooksCustomer data,
+    required QuickbooksPurchase data,
   }) async {
     var oldData = await get(
       accessToken: accessToken,
@@ -139,17 +142,15 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
       accessToken: accessToken,
       companyId: companyId,
       data: data.toMap(),
-      location: 'Customer',
+      location: 'Purchase',
     );
-    var newData = QuickbooksCustomer.fromMap(result);
+    var newData = QuickbooksPurchase.fromMap(result);
     return newData;
   }
 
-  /// Deletes a [QuickbooksCustomer] with
+  /// Deletes a [QuickbooksInvoice] with
   /// the given [accessToken] and [companyId]
-  ///
-  /// Sets the [active] field to false
-  Future<QuickbooksCustomer> deleteOne({
+  Future<bool> deleteOne({
     required String accessToken,
     required String companyId,
     required String id,
@@ -164,17 +165,32 @@ class QuickbooksCustomerService extends QuickbooksQueryService {
       throw AlfredException(404, 'Data not found');
     }
 
-    data.active = false;
-
-    var result = await post(
-      accessToken: accessToken,
-      companyId: companyId,
-      data: data.toMap(),
-      location: 'Customer',
-    );
-
-    var newData = QuickbooksCustomer.fromMap(result);
-
-    return newData;
+    return await http
+        .post(
+      Uri.https(
+        baseEndpoint,
+        '$companyEndpoint$companyId/$postEndpoint?operation=delete',
+        {
+          'minorversion': '65',
+        },
+      ),
+      headers: {
+        'Accept': 'application/json',
+        'content-type': 'application/json',
+        'Authorization': 'Bearer $accessToken'
+      },
+      body: jsonEncode({
+        "SyncToken": data.syncToken,
+        "Id": data.id,
+      }),
+    )
+        .then((response) async {
+      switch (response.statusCode) {
+        case 200:
+          return true;
+        default:
+          throw AlfredException(500, 'Quickbooks error: ${response.body}');
+      }
+    });
   }
 }

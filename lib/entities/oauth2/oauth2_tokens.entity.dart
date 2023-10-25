@@ -71,7 +71,7 @@ class QuickbooksOauth2Tokens {
             accessTokenExpireDate.millisecondsSinceEpoch,
       if (!quickbooksFormat)
         'refresh_token_expire_date':
-            refreshTokenExpireDate.microsecondsSinceEpoch,
+            refreshTokenExpireDate.millisecondsSinceEpoch,
       'refresh_token': refreshToken,
       'access_token': accessToken,
       'token_type': tokenType,
@@ -87,13 +87,13 @@ class QuickbooksOauth2Tokens {
           int.parse(map['x_refresh_token_expires_in'].toString()),
       expiresIn: int.parse(map['expires_in'].toString()),
       refreshTokenExpireDate: map['refresh_token_expire_date'] != null
-          ? DateTime.fromMicrosecondsSinceEpoch(
+          ? DateTime.fromMillisecondsSinceEpoch(
               int.parse(map['refresh_token_expire_date'].toString()))
           : DateTime.now().add(Duration(
               seconds:
                   int.parse(map['x_refresh_token_expires_in'].toString()))),
       accessTokenExpireDate: map['access_token_expire_date'] != null
-          ? DateTime.fromMicrosecondsSinceEpoch(
+          ? DateTime.fromMillisecondsSinceEpoch(
               int.parse(map['access_token_expire_date'].toString()))
           : DateTime.now()
               .add(Duration(seconds: int.parse(map['expires_in'].toString()))),

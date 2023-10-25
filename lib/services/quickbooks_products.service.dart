@@ -1,3 +1,4 @@
+import 'package:alfred/alfred.dart';
 import 'package:quickbooks/entities/quickbooks_product.entity.dart';
 import 'package:quickbooks/entities/quickbooks_attachable.entity.dart';
 import 'package:quickbooks/services/base/quickbooks_query.service.dart';
@@ -19,7 +20,8 @@ class QuickbooksProductsService extends QuickbooksQueryService {
       {super.isProduction,
       super.postEndpoint = 'item',
       super.baseQuery = "SELECT * FROM Item",
-      super.baseConditions = "Type = 'Inventory'"});
+      super.baseConditions =
+          "Type IN ('Inventory', 'Service', 'NonInventory')"});
 
   /// Gets all [QuickbooksProduct] in the Quickbooks API for the given [accessToken] and [companyId]
   Future<List<QuickbooksProduct>> getAll({
@@ -114,9 +116,54 @@ class QuickbooksProductsService extends QuickbooksQueryService {
     required String companyId,
     required QuickbooksProduct data,
   }) async {
+    var oldData = await get(
+      accessToken: accessToken,
+      companyId: companyId,
+      id: data.id!,
+    );
+
+    if (oldData == null) {
+      throw AlfredException(404, 'Data not found');
+    }
+
+    data.syncToken = oldData.syncToken;
+
     var result = await post(
         accessToken: accessToken, companyId: companyId, data: data.toMap());
     var newData = QuickbooksProduct.fromMap(result);
+    return newData;
+  }
+
+  /// Deletes a [QuickbooksProduct] with
+  /// the given [accessToken] and [companyId]
+  ///
+  /// Sets the [active] field to false
+  Future<QuickbooksProduct> deleteOne({
+    required String accessToken,
+    required String companyId,
+    required String id,
+  }) async {
+    var data = await get(
+      accessToken: accessToken,
+      companyId: companyId,
+      id: id,
+    );
+
+    if (data == null) {
+      throw AlfredException(404, 'Data not found');
+    }
+
+    data.active = false;
+
+    var result = await post(
+      accessToken: accessToken,
+      companyId: companyId,
+      data: data.toMap(),
+      location: 'Account',
+    );
+
+    var newData = QuickbooksProduct.fromMap(result);
+
     return newData;
   }
 }

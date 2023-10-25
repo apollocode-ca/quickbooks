@@ -32,7 +32,7 @@ class QuickbooksCompanyService extends QuickbooksQueryService {
         accessToken: accessToken,
         companyId: companyId,
         id: companyId,
-        location: 'CompanyInfo');
+        location: 'Company');
     if (item == null) {
       return null;
     }

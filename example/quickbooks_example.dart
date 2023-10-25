@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:quickbooks/entities/entity.export.dart';
 import 'package:quickbooks/environment/environment.export.dart';
+import 'package:quickbooks/services/quickbooks_tax_rates.service.dart';
 import 'package:quickbooks/services/services.export.dart';
 
 /// Note that to run this example, you must have your environment variables set
@@ -13,6 +14,10 @@ void main() async {
   await getProductsExample(tokens);
   await getInvoicesExample(tokens);
   await getPaymentsExample(tokens);
+  await getAccountsExample(tokens);
+  await getPurchasesExample(tokens);
+  await getVendorsExample(tokens);
+  await getTaxRatesExample(tokens);
 }
 
 /// Example of how to use the oauth connection with Quickbooks.
@@ -33,6 +38,8 @@ Future<QuickbooksOauth2Tokens> oauthConnectExample(
 
   String authUrl = await service.getAuthUrl();
 
+  // Prints the connection instructions in the console and
+  // gets the informations from the console entry
   print('Please connect on the link below:\n');
   print(authUrl);
   print(
@@ -46,6 +53,7 @@ Future<QuickbooksOauth2Tokens> oauthConnectExample(
   print('You entered: $realmId');
   print("Retrieving data");
 
+  // Gets the tokens from Quickbooks
   QuickbooksOauth2Tokens value =
       await service.getTokens(authorizationCode: code ?? "", realmId: realmId);
   print('Oauth2 tokens');
@@ -132,6 +140,62 @@ Future getProductsExample(QuickbooksOauth2Tokens tokens) async {
     companyId: tokens.companyId!,
   );
   print('Products');
+  print(value);
+  print('');
+}
+
+/// Gets and prints all the accounts
+Future getAccountsExample(QuickbooksOauth2Tokens tokens) async {
+  var accessToken = tokens.accessToken;
+  var service = QuickbooksAccountsService();
+
+  var value = await service.getAll(
+    accessToken: accessToken,
+    companyId: tokens.companyId!,
+  );
+  print('Accounts');
+  print(value);
+  print('');
+}
+
+/// Gets and prints all the purchases
+Future getPurchasesExample(QuickbooksOauth2Tokens tokens) async {
+  var accessToken = tokens.accessToken;
+  var service = QuickbooksPurchasesService();
+
+  var value = await service.getAll(
+    accessToken: accessToken,
+    companyId: tokens.companyId!,
+  );
+  print('Purchases');
+  print(value);
+  print('');
+}
+
+/// Gets and prints all the vendors
+Future getVendorsExample(QuickbooksOauth2Tokens tokens) async {
+  var accessToken = tokens.accessToken;
+  var service = QuickbooksVendorsService();
+
+  var value = await service.getAll(
+    accessToken: accessToken,
+    companyId: tokens.companyId!,
+  );
+  print('Vendors');
+  print(value);
+  print('');
+}
+
+/// Gets and prints all the tax rates
+Future getTaxRatesExample(QuickbooksOauth2Tokens tokens) async {
+  var accessToken = tokens.accessToken;
+  var service = QuickbooksTaxRatesService();
+
+  var value = await service.getAll(
+    accessToken: accessToken,
+    companyId: tokens.companyId!,
+  );
+  print('Tax Rates');
   print(value);
   print('');
 }

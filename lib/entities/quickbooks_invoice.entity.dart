@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
+import 'package:intl/intl.dart';
 
 import 'package:quickbooks/entities/entity.export.dart';
 import 'package:quickbooks/enums/invoice/global_tax_calculation_type.enum.dart';
@@ -21,7 +22,7 @@ class QuickbooksInvoice {
   String? trackingNum;
   QuickbooksReferenceType? classRef;
   String? printStatus;
-  QuickbooksReferenceType? salesTermReg;
+  QuickbooksReferenceType? salesTermRef;
   String? txnSource;
   List<QuickbooksLinkedTxn>? linkedTxn;
   QuickbooksReferenceType? depositToAccountRef;
@@ -30,8 +31,6 @@ class QuickbooksInvoice {
   String? transactionLocationType;
   DateTime? dueDate;
   Map<String, dynamic>? metaData;
-  DateTime? createTime;
-  DateTime? lastUpdatedTime;
   String? privateNote;
   QuickbooksEmailAddress? billEmailCc;
   QuickbooksMemoRef? customerMemo;
@@ -70,7 +69,7 @@ class QuickbooksInvoice {
     this.trackingNum,
     this.classRef,
     this.printStatus,
-    this.salesTermReg,
+    this.salesTermRef,
     this.txnSource,
     this.linkedTxn,
     this.depositToAccountRef,
@@ -79,8 +78,6 @@ class QuickbooksInvoice {
     this.transactionLocationType,
     this.dueDate,
     this.metaData,
-    this.createTime,
-    this.lastUpdatedTime,
     this.privateNote,
     this.billEmailCc,
     this.customerMemo,
@@ -121,7 +118,7 @@ class QuickbooksInvoice {
     String? trackingNum,
     QuickbooksReferenceType? classRef,
     String? printStatus,
-    QuickbooksReferenceType? salesTermReg,
+    QuickbooksReferenceType? salesTermRef,
     String? txnSource,
     List<QuickbooksLinkedTxn>? linkedTxn,
     QuickbooksReferenceType? depositeToAccountRef,
@@ -130,8 +127,6 @@ class QuickbooksInvoice {
     String? transactionLocationType,
     DateTime? dueDate,
     Map<String, dynamic>? metaData,
-    DateTime? createTime,
-    DateTime? lastUpdatedTime,
     String? privateNote,
     QuickbooksEmailAddress? billEmailCc,
     QuickbooksMemoRef? customerMemo,
@@ -171,7 +166,7 @@ class QuickbooksInvoice {
       trackingNum: trackingNum ?? this.trackingNum,
       classRef: classRef ?? this.classRef,
       printStatus: printStatus ?? this.printStatus,
-      salesTermReg: salesTermReg ?? this.salesTermReg,
+      salesTermRef: salesTermRef ?? this.salesTermRef,
       txnSource: txnSource ?? this.txnSource,
       linkedTxn: linkedTxn ?? this.linkedTxn,
       depositToAccountRef: depositeToAccountRef ?? depositToAccountRef,
@@ -182,8 +177,6 @@ class QuickbooksInvoice {
           transactionLocationType ?? this.transactionLocationType,
       dueDate: dueDate ?? this.dueDate,
       metaData: metaData ?? this.metaData,
-      createTime: createTime ?? this.createTime,
-      lastUpdatedTime: lastUpdatedTime ?? this.lastUpdatedTime,
       privateNote: privateNote ?? this.privateNote,
       billEmailCc: billEmailCc ?? this.billEmailCc,
       customerMemo: customerMemo ?? this.customerMemo,
@@ -222,13 +215,14 @@ class QuickbooksInvoice {
       'CurrencyRef': currencyRef?.toMap(),
       'DocNumber': docNumber,
       'BillEmail': billEmail?.toMap(),
-      'TxnDate': txnDate?.toString(),
+      'TxnDate':
+          txnDate != null ? DateFormat('yyyy-MM-dd').format(txnDate!) : null,
       'ShipFromAddr': shipFromAddr?.toMap(),
       'ShipDate': shipDate?.toString(),
       'TrackingNum': trackingNum,
       'ClassRef': classRef?.toMap(),
       'PrintStatus': printStatus,
-      'SalesTermReg': salesTermReg?.toMap(),
+      'SalesTermRef': salesTermRef?.toMap(),
       'TxnSource': txnSource,
       'LinkedTxn': linkedTxn?.map((x) => x.toMap()).toList(),
       'DepositToAccountRef': depositToAccountRef?.toMap(),
@@ -237,8 +231,6 @@ class QuickbooksInvoice {
       'TransactionLocationType': transactionLocationType,
       'DueDate': dueDate?.toString(),
       'MetaData': metaData,
-      'CreateTime': createTime?.toString(),
-      'LastUpdatedTime': lastUpdatedTime?.toString(),
       'PrivateNote': privateNote,
       'BillEmailCc': billEmailCc?.toMap(),
       'CustomerMemo': customerMemo?.toMap(),
@@ -286,7 +278,7 @@ class QuickbooksInvoice {
           ? QuickbooksEmailAddress.fromMap(
               map['BillEmail'] as Map<String, dynamic>)
           : null,
-      txnDate: DateTime.tryParse(map['txnDate'].toString()),
+      txnDate: DateTime.tryParse(map['TxnDate'].toString()),
       shipFromAddr: map['ShipFromAddr'] != null
           ? QuickbooksPhysicalAddress.fromMap(
               map['ShipFromAddr'] as Map<String, dynamic>)
@@ -298,9 +290,9 @@ class QuickbooksInvoice {
               map['ClassRef'] as Map<String, dynamic>)
           : null,
       printStatus: map['PrintStatus'],
-      salesTermReg: map['SalesTermReg'] != null
+      salesTermRef: map['SalesTermRef'] != null
           ? QuickbooksReferenceType.fromMap(
-              map['SalesTermReg'] as Map<String, dynamic>)
+              map['SalesTermRef'] as Map<String, dynamic>)
           : null,
       txnSource: map['TxnSource'],
       linkedTxn: map['LinkedTxn'] != null
@@ -322,8 +314,6 @@ class QuickbooksInvoice {
       transactionLocationType: map['TransactionLocationType'],
       dueDate: DateTime.tryParse(map['DueDate'].toString()),
       metaData: map['MetaData'],
-      createTime: DateTime.tryParse(map['CreateTime'].toString()),
-      lastUpdatedTime: DateTime.tryParse(map['LastUpdatedTime'].toString()),
       privateNote: map['PrivateNote'],
       billEmailCc: map['BillEmailCc'] != null
           ? QuickbooksEmailAddress.fromMap(
@@ -397,7 +387,17 @@ class QuickbooksInvoice {
 
   @override
   String toString() {
-    return 'QuickbooksInvoice(id: $id, line: $line, customerRef: $customerRef, syncToken: $syncToken, currencyRef: $currencyRef, docNumber: $docNumber, billEmail: $billEmail, txnDate: $txnDate, shipFromAddr: $shipFromAddr, shipDate: $shipDate, trackingNum: $trackingNum, classRef: $classRef, printStatus: $printStatus, salesTermReg: $salesTermReg, txnSource: $txnSource, linkedTxn: $linkedTxn, depositeToAccountRef: $depositToAccountRef, globalTaxalculation: $globalTaxCalculation, allowOnlineACHPayment: $allowOnlineACHPayment, transactionLocationType: $transactionLocationType, dueDate: $dueDate, metaData: $metaData, createTime: $createTime, lastUpdatedTime: $lastUpdatedTime, privateNote: $privateNote, billEmailCc: $billEmailCc, customerMemo: $customerMemo, emailStatus: $emailStatus, exchangeRate: $exchangeRate, deposit: $deposit, txnTaxDetail: $txnTaxDetail, allowOnlineCreditCardPayment: $allowOnlineCreditCardPayment, customField: $customField, shipAddr: $shipAddr, departmentRef: $departmentRef, billEmailBcc: $billEmailBcc, shipMethodRef: $shipMethodRef, billAddr: $billAddr, applyTaxAfterDiscount: $applyTaxAfterDiscount, homeBalance: $homeBalance, deliveryInfo: $deliveryInfo, totalAmt: $totalAmt, invoiceLink: $invoiceLink, recurDataRef: $recurDataRef, taxExemptionRef: $taxExemptionRef, balance: $balance, homeTotalAmt: $homeTotalAmt, freeFormAddress: $freeFormAddress)';
+    return 'QuickbooksInvoice(id: $id, line: $line, customerRef: $customerRef, syncToken: $syncToken, currencyRef: $currencyRef, docNumber: $docNumber, '
+        'billEmail: $billEmail, txnDate: $txnDate, shipFromAddr: $shipFromAddr, shipDate: $shipDate, trackingNum: $trackingNum, classRef: $classRef, '
+        'printStatus: $printStatus, salesTermRef: $salesTermRef, txnSource: $txnSource, linkedTxn: $linkedTxn, depositeToAccountRef: $depositToAccountRef, '
+        'globalTaxalculation: $globalTaxCalculation, allowOnlineACHPayment: $allowOnlineACHPayment, transactionLocationType: $transactionLocationType, '
+        'dueDate: $dueDate, metaData: $metaData, privateNote: $privateNote, '
+        'billEmailCc: $billEmailCc, customerMemo: $customerMemo, emailStatus: $emailStatus, exchangeRate: $exchangeRate, deposit: $deposit, '
+        'txnTaxDetail: $txnTaxDetail, allowOnlineCreditCardPayment: $allowOnlineCreditCardPayment, customField: $customField, shipAddr: $shipAddr, '
+        'departmentRef: $departmentRef, billEmailBcc: $billEmailBcc, shipMethodRef: $shipMethodRef, billAddr: $billAddr, '
+        'applyTaxAfterDiscount: $applyTaxAfterDiscount, homeBalance: $homeBalance, deliveryInfo: $deliveryInfo, totalAmt: $totalAmt, invoiceLink: $invoiceLink, '
+        'recurDataRef: $recurDataRef, taxExemptionRef: $taxExemptionRef, balance: $balance, homeTotalAmt: $homeTotalAmt, freeFormAddress: $freeFormAddress, '
+        ')';
   }
 
   @override
@@ -418,7 +418,7 @@ class QuickbooksInvoice {
         other.trackingNum == trackingNum &&
         other.classRef == classRef &&
         other.printStatus == printStatus &&
-        other.salesTermReg == salesTermReg &&
+        other.salesTermRef == salesTermRef &&
         other.txnSource == txnSource &&
         collectionEquals(other.linkedTxn, linkedTxn) &&
         other.depositToAccountRef == depositToAccountRef &&
@@ -427,8 +427,6 @@ class QuickbooksInvoice {
         other.transactionLocationType == transactionLocationType &&
         other.dueDate == dueDate &&
         collectionEquals(other.metaData, metaData) &&
-        other.createTime == createTime &&
-        other.lastUpdatedTime == lastUpdatedTime &&
         other.privateNote == privateNote &&
         other.billEmailCc == billEmailCc &&
         other.customerMemo == customerMemo &&
@@ -470,7 +468,7 @@ class QuickbooksInvoice {
         trackingNum.hashCode ^
         classRef.hashCode ^
         printStatus.hashCode ^
-        salesTermReg.hashCode ^
+        salesTermRef.hashCode ^
         txnSource.hashCode ^
         linkedTxn.hashCode ^
         depositToAccountRef.hashCode ^
@@ -479,8 +477,6 @@ class QuickbooksInvoice {
         transactionLocationType.hashCode ^
         dueDate.hashCode ^
         metaData.hashCode ^
-        createTime.hashCode ^
-        lastUpdatedTime.hashCode ^
         privateNote.hashCode ^
         billEmailCc.hashCode ^
         customerMemo.hashCode ^

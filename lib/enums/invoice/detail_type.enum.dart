@@ -22,6 +22,7 @@ enum QuickbooksLineDetailType {
 
 /// Extension of [QuickbooksLineDetailType] for json string conversion
 extension QuickbooksLineDetailTypeExtension on QuickbooksLineDetailType {
+  /// Transforms the enum value in json string to be send to Quickbooks API
   String toJsonString() {
     switch (this) {
       case QuickbooksLineDetailType.salesItemLineDetail:
@@ -65,6 +66,7 @@ extension QuickbooksLineDetailTypeExtension on QuickbooksLineDetailType {
     }
   }
 
+  /// Transforms a json string in an enum value
   static QuickbooksLineDetailType fromJsonString(String json) {
     for (var value in QuickbooksLineDetailType.values) {
       if (value.toJsonString() == json) {

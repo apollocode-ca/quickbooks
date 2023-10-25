@@ -41,6 +41,15 @@ class QuickbooksQueryService {
     _baseEndpoint = _isProduction ? _productionString : _sandboxString;
   }
 
+  /// The base endpoint url used by the service.
+  String get baseEndpoint => _baseEndpoint;
+
+  /// The endpoint used to make request as a company
+  String get companyEndpoint => _companyEndpoint;
+
+  /// The endpoint used to make post request
+  String get postEndpoint => _postEndpoint;
+
   /// Build an sql query with the given [query], [firstConditions] and [conditions].
   ///
   /// If you don't give it, [query] will be initialized with [baseQuery].
@@ -52,7 +61,7 @@ class QuickbooksQueryService {
     String? conditions,
   }) {
     query ??= _baseQuery;
-    firstConditions ?? _baseConditions;
+    firstConditions ??= _baseConditions;
 
     if (firstConditions == null && conditions == null) {
       return query;
@@ -61,14 +70,14 @@ class QuickbooksQueryService {
     String finalQuery = "$query WHERE ";
 
     if (firstConditions != null) {
-      finalQuery += "($firstConditions)";
+      finalQuery += firstConditions;
       if (conditions != null) {
         finalQuery += " and ";
       }
     }
 
     if (conditions != null) {
-      finalQuery += "($conditions)";
+      finalQuery += conditions;
     }
 
     return finalQuery;
@@ -108,7 +117,7 @@ class QuickbooksQueryService {
           }
           return items;
         default:
-          throw AlfredException(500, 'Quickbooks error');
+          throw AlfredException(500, 'Quickbooks error: ${response.body}');
       }
     });
   }
@@ -141,7 +150,7 @@ class QuickbooksQueryService {
           Map<String, dynamic> body = jsonDecode(response.body);
           List<Map<String, dynamic>> items = [];
           try {
-            for (var value in body["QueryResponse"][location] as List) {
+            for (var value in (body["QueryResponse"][location] ?? []) as List) {
               try {
                 items.add(value as Map<String, dynamic>);
               } catch (_) {}
@@ -151,7 +160,7 @@ class QuickbooksQueryService {
           }
           return items;
         default:
-          throw AlfredException(500, 'Quickbooks error');
+          throw AlfredException(500, 'Quickbooks error: ${response.body}');
       }
     });
   }
@@ -186,7 +195,7 @@ class QuickbooksQueryService {
         case 400:
           return null;
         default:
-          throw AlfredException(500, 'Quickbooks error');
+          throw AlfredException(500, 'Quickbooks error: ${response.body}');
       }
     });
   }
@@ -211,7 +220,7 @@ class QuickbooksQueryService {
       ),
       headers: {
         'Accept': 'application/json',
-        'content-type': 'text/plain',
+        'content-type': 'application/json',
         'Authorization': 'Bearer $accessToken'
       },
       body: jsonEncode(data),
@@ -223,7 +232,7 @@ class QuickbooksQueryService {
           Map<String, dynamic> result = body[location];
           return result;
         default:
-          throw AlfredException(500, 'Quickbooks error');
+          throw AlfredException(500, 'Quickbooks error: ${response.body}');
       }
     });
   }

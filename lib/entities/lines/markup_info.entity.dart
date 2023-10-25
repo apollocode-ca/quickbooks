@@ -27,6 +27,7 @@ class QuickbooksMarkupInfo {
     );
   }
 
+  /// Converts to a map value
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'PriceLevelRef': priceLevelRef?.toMap(),
@@ -35,6 +36,7 @@ class QuickbooksMarkupInfo {
     };
   }
 
+  /// Converts from a map value
   factory QuickbooksMarkupInfo.fromMap(Map<String, dynamic> map) {
     return QuickbooksMarkupInfo(
       priceLevelRef: map['PriceLevelRef'] != null
@@ -49,8 +51,10 @@ class QuickbooksMarkupInfo {
     );
   }
 
+  /// Converts to a json value
   String toJson() => json.encode(toMap());
 
+  /// Converts from a json value
   factory QuickbooksMarkupInfo.fromJson(String source) =>
       QuickbooksMarkupInfo.fromMap(json.decode(source) as Map<String, dynamic>);
 

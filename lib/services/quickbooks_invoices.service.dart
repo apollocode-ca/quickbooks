@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:alfred/alfred.dart';
 import 'package:quickbooks/entities/quickbooks_invoice.entity.dart';
 import 'package:quickbooks/entities/quickbooks_attachable.entity.dart';
 import 'package:quickbooks/services/base/quickbooks_query.service.dart';
+import 'package:http/http.dart' as http;
 
 /// Service for the [QuickbooksInvoice]
 class QuickbooksInvoiceService extends QuickbooksQueryService {
@@ -15,11 +19,12 @@ class QuickbooksInvoiceService extends QuickbooksQueryService {
   /// [isProduction] Specifies if the service is in production or in sandbox. This will
   /// define the base endpoint url used by the service. If not given, takes the environement
   /// value QUICKBOOKS_IS_PRODUCTION or is true by default.
-  QuickbooksInvoiceService(
-      {super.isProduction,
-      super.postEndpoint = 'invoice',
-      super.baseQuery = "SELECT * FROM Invoice",
-      super.baseConditions});
+  QuickbooksInvoiceService({
+    super.isProduction,
+    super.postEndpoint = 'invoice',
+    super.baseQuery = "SELECT * FROM Invoice",
+    super.baseConditions,
+  });
 
   /// Gets all [QuickbooksInvoice] in the Quickbooks API for the given [accessToken] and [companyId]
   Future<List<QuickbooksInvoice>> getAll({
@@ -106,9 +111,11 @@ class QuickbooksInvoiceService extends QuickbooksQueryService {
     required QuickbooksInvoice data,
   }) async {
     var result = await post(
-        accessToken: accessToken,
-        companyId: companyId,
-        data: data.toMap(withId: false));
+      accessToken: accessToken,
+      companyId: companyId,
+      data: data.toMap(withId: false),
+      location: 'Invoice',
+    );
     var newData = QuickbooksInvoice.fromMap(result);
     return newData;
   }
@@ -120,9 +127,71 @@ class QuickbooksInvoiceService extends QuickbooksQueryService {
     required String companyId,
     required QuickbooksInvoice data,
   }) async {
+    var oldData = await get(
+      accessToken: accessToken,
+      companyId: companyId,
+      id: data.id!,
+    );
+
+    if (oldData == null) {
+      throw AlfredException(404, 'Data not found');
+    }
+
+    data.syncToken = oldData.syncToken;
+
     var result = await post(
-        accessToken: accessToken, companyId: companyId, data: data.toMap());
+      accessToken: accessToken,
+      companyId: companyId,
+      data: data.toMap(),
+      location: 'Invoice',
+    );
     var newData = QuickbooksInvoice.fromMap(result);
     return newData;
+  }
+
+  /// Deletes a [QuickbooksInvoice] with
+  /// the given [accessToken] and [companyId]
+  Future<bool> deleteOne({
+    required String accessToken,
+    required String companyId,
+    required String id,
+  }) async {
+    var data = await get(
+      accessToken: accessToken,
+      companyId: companyId,
+      id: id,
+    );
+
+    if (data == null) {
+      throw AlfredException(404, 'Data not found');
+    }
+
+    return await http
+        .post(
+      Uri.https(
+        baseEndpoint,
+        '$companyEndpoint$companyId/$postEndpoint?operation=delete',
+        {
+          'minorversion': '65',
+        },
+      ),
+      headers: {
+        'Accept': 'application/json',
+        'content-type': 'application/json',
+        'Authorization': 'Bearer $accessToken'
+      },
+      body: jsonEncode({
+        "SyncToken": data.syncToken,
+        "Id": data.id,
+      }),
+    )
+        .then((response) async {
+      switch (response.statusCode) {
+        case 200:
+          return true;
+        default:
+          throw AlfredException(500, 'Quickbooks error: ${response.body}');
+      }
+    });
   }
 }

@@ -3,10 +3,10 @@ import 'dart:convert';
 /// Entity to manage name-value pairs in Quickbooks entities
 class QuickbooksReferenceType {
   dynamic value;
-  String name;
+  String? name;
   QuickbooksReferenceType({
     required this.value,
-    required this.name,
+    this.name,
   });
 
   QuickbooksReferenceType copyWith({
@@ -29,7 +29,7 @@ class QuickbooksReferenceType {
   factory QuickbooksReferenceType.fromMap(Map<String, dynamic> map) {
     return QuickbooksReferenceType(
       value: map['value'] ?? '',
-      name: map['name'] ?? '',
+      name: map['name'],
     );
   }
 

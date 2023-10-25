@@ -1,3 +1,4 @@
+import 'package:alfred/alfred.dart';
 import 'package:quickbooks/entities/quickbooks_category.entity.dart';
 import 'package:quickbooks/entities/quickbooks_attachable.entity.dart';
 import 'package:quickbooks/services/base/quickbooks_query.service.dart';
@@ -114,9 +115,53 @@ class QuickbooksCategoriesService extends QuickbooksQueryService {
     required String companyId,
     required QuickbooksCategory data,
   }) async {
+    var oldData = await get(
+      accessToken: accessToken,
+      companyId: companyId,
+      id: data.id!,
+    );
+
+    if (oldData == null) {
+      throw AlfredException(404, 'Data not found');
+    }
+
+    data.syncToken = oldData.syncToken;
+
     var result = await post(
         accessToken: accessToken, companyId: companyId, data: data.toMap());
     var newData = QuickbooksCategory.fromMap(result);
+    return newData;
+  }
+
+  /// Deletes a [QuickbooksCategory] with
+  /// the given [accessToken] and [companyId]
+  ///
+  /// Sets the [active] field to false
+  Future<QuickbooksCategory> deleteOne({
+    required String accessToken,
+    required String companyId,
+    required String id,
+  }) async {
+    var data = await get(
+      accessToken: accessToken,
+      companyId: companyId,
+      id: id,
+    );
+
+    if (data == null) {
+      throw AlfredException(404, 'Data not found');
+    }
+
+    data.active = false;
+
+    var result = await post(
+      accessToken: accessToken,
+      companyId: companyId,
+      data: data.toMap(),
+    );
+
+    var newData = QuickbooksCategory.fromMap(result);
+
     return newData;
   }
 }

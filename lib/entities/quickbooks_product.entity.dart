@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:quickbooks/enums/enums.dart';
 
 import 'quickbooks_name_value.entity.dart';
 
@@ -12,6 +13,7 @@ class QuickbooksProduct {
   String? name;
   double? price;
   double? cost;
+  QuickbooksProductType type;
   QuickbooksReferenceType? parentRef;
   String? description;
   String? syncToken;
@@ -62,6 +64,7 @@ class QuickbooksProduct {
     this.name,
     this.price,
     this.cost,
+    this.type = QuickbooksProductType.inventory,
     this.description,
     this.parentRef,
     this.syncToken,
@@ -86,6 +89,7 @@ class QuickbooksProduct {
     String? name,
     double? price,
     double? cost,
+    QuickbooksProductType? type,
     String? description,
     QuickbooksReferenceType? parentRef,
     String? syncToken,
@@ -109,6 +113,7 @@ class QuickbooksProduct {
       name: name ?? this.name,
       price: price ?? this.price,
       cost: cost ?? cost,
+      type: type ?? this.type,
       description: description ?? this.description,
       syncToken: syncToken ?? this.syncToken,
       parentRef: parentRef ?? this.parentRef,
@@ -130,13 +135,13 @@ class QuickbooksProduct {
   Map<String, dynamic> toMap({bool withId = true}) {
     return {
       if (withId) 'Id': id,
-      'Type': 'Inventory',
       'FullyQualifiedName': fullyQualifiedName,
       'domain': domain,
       'Sku': sku,
       'Name': name,
       'UnitPrice': price,
       'PurchaseCost': cost,
+      'Type': type.toJsonString(),
       'Description': description,
       'ParentRef': parentRef?.toMap(),
       'SyncToken': syncToken,
@@ -165,6 +170,7 @@ class QuickbooksProduct {
       name: map['Name'],
       price: double.tryParse(map['UnitPrice'].toString()),
       cost: double.tryParse(map['PurchaseCost'].toString()),
+      type: QuickbooksProductTypeExtension.fromJsonString(map['Type']),
       description: map['Description'],
       parentRef: (map['ParentRef'] != null)
           ? QuickbooksReferenceType.fromMap(map['ParentRef'])
@@ -197,7 +203,11 @@ class QuickbooksProduct {
 
   @override
   String toString() {
-    return 'QuickbooksProduct(id: $id, fullyQualifiedName: $fullyQualifiedName, domain: $domain, name: $name, syncToken: $syncToken, sparse: $sparse, active: $active, taxable: $taxable, incomeAccountRef: $incomeAccountRef, purchaseDesc: $purchaseDesc, expenseAccountRef: $expenseAccountRef, assetAccountRef: $assetAccountRef, trackQtyOnHand: $trackQtyOnHand, qtyOnHand: $qtyOnHand, invStartDate: $invStartDate, metaData: $metaData)';
+    return 'QuickbooksProduct(id: $id, fullyQualifiedName: $fullyQualifiedName, domain: $domain, name: $name, syncToken: $syncToken, '
+        'sparse: $sparse, active: $active, taxable: $taxable, incomeAccountRef: $incomeAccountRef, purchaseDesc: $purchaseDesc, '
+        'expenseAccountRef: $expenseAccountRef, assetAccountRef: $assetAccountRef, trackQtyOnHand: $trackQtyOnHand, qtyOnHand: $qtyOnHand, '
+        'invStartDate: $invStartDate, metaData: $metaData, sku: $sku, price: $price, cost: $cost, type: $type, description: $description, '
+        'parentRef: $parentRef)';
   }
 
   @override
@@ -220,7 +230,13 @@ class QuickbooksProduct {
         trackQtyOnHand == other.trackQtyOnHand &&
         qtyOnHand == other.qtyOnHand &&
         invStartDate == other.invStartDate &&
-        metaData == other.metaData;
+        metaData == other.metaData &&
+        sku == other.sku &&
+        price == other.price &&
+        cost == other.cost &&
+        type == other.type &&
+        description == other.description &&
+        parentRef == other.parentRef;
   }
 
   @override
@@ -240,6 +256,12 @@ class QuickbooksProduct {
         trackQtyOnHand.hashCode ^
         qtyOnHand.hashCode ^
         invStartDate.hashCode ^
-        metaData.hashCode;
+        metaData.hashCode ^
+        sku.hashCode ^
+        price.hashCode ^
+        cost.hashCode ^
+        type.hashCode ^
+        description.hashCode ^
+        parentRef.hashCode;
   }
 }

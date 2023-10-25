@@ -1,3 +1,7 @@
+## 1.4.2
+
+- Fix tax rate bug
+
 ## 1.4.1
 
 - Fix tax rate bug

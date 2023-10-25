@@ -77,7 +77,7 @@ class QuickbooksTaxRate {
       'Name': name,
       'AgencyRef': agencyRef?.toMap(),
       'SpecialTaxType': specialTaxType,
-      'EffectiveTaxRate': effectiveTaxRate?.map((e) => e.toMap()),
+      'EffectiveTaxRate': effectiveTaxRate?.map((e) => e.toMap()).toList(),
       'DisplayName': displayName,
       'TaxReturnLineRef': taxReturnLineRef?.toMap(),
       'Active': active,
